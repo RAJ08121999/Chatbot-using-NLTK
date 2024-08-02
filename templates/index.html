@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Experiment Chatbot</title>
+    <link rel ="stylesheet" href="../static/style.css">
+</head>
+<body>
+    <header>
+        <h2>Greater Kolkata College of Engineering & Management</h2>
+        <h4>Chatbot Experiment using AI in Python </h4>
+    </header>
+    <div class="chatbox">
+        <div class="chatlogs" id="chatlogs">
+            <div class="chat bot"><p>Hello! How can I assist you today?</p></div>
+        </div><br>
+        <input type="text" id="userInput" placeholder="Type a message" onkeydown="if(event.key === 'Enter') sendMessage()">
+        <br>
+        <button onclick="sendMessage()">Send</button>
+    </div>
+    <script>
+        function sendMessage() {
+            var userInput = document.getElementById('userInput').value;
+            var chatlogs = document.getElementById('chatlogs');
+            var userMessage = document.createElement('div');
+            userMessage.className = 'chat user';
+            userMessage.innerHTML = '<p>' + userInput + '</p>';
+            chatlogs.appendChild(userMessage);
+            fetch('/get?msg=' + userInput)
+                .then(response => response.text())
+                .then(data => {
+                    var botMessage = document.createElement('div');
+                    botMessage.className = 'chat bot';
+                    botMessage.innerHTML = '<p>' + data + '</p>';
+                    chatlogs.appendChild(botMessage);
+                    document.getElementById('userInput').value = '';
+                    chatlogs.scrollTop = chatlogs.scrollHeight;
+                });
+        }
+    </script>
+    <footer>
+        <h5>Created this Chatbot under the Guidance of Piyush sir of Surtech Pvt. Ltd. </h5>
+    </footer>
+</body>
+</html>
